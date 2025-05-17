@@ -4,7 +4,7 @@ from torch.nn import functional as F
 
 class CasualSelfAttention(nn.Module):
     def __init__(self, config):
-        super.__init__()
+        super().__init__()
         assert config.n_embd % config.n_head == 0, "n_embd must be divisible by n_head"
         
         self.head_dim = config.n_embd // config.n_head
@@ -35,6 +35,7 @@ class CasualSelfAttention(nn.Module):
         if mask is not None:
             attn_scores = attn_scores.masked_fill(mask==0, float('-inf'))
             
+        # Scaled Dot-Product Attention
         attn_weights = torch.softmax(attn_scores, dim=-1)
         attn_weights = self.dropout(attn_weights)
         
