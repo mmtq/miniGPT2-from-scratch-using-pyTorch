@@ -5,3 +5,11 @@ class GPT2Config:
     n_head = 8  # Number of attention heads
     n_embd = 512  # Embedding size
     dropout = 0.1  # Dropout rate
+
+# class GPT2Config:
+#     vocab_size = 50257
+#     max_position_embeddings = 64   
+#     n_layer = 2                    
+#     n_head = 2                     
+#     n_embd = 128                   
+#     dropout = 0.0

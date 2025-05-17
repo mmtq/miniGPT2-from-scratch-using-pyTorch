@@ -39,7 +39,7 @@ class CasualSelfAttention(nn.Module):
         attn_weights = torch.softmax(attn_scores, dim=-1)
         attn_weights = self.dropout(attn_weights)
         
-        attn_output = (attn_weights @ V).transpose(1,2).contiguous.view(B, T, C)
+        attn_output = (attn_weights @ V).transpose(1,2).contiguous().view(B, T, C)
         
         return self.proj(attn_output)
         
