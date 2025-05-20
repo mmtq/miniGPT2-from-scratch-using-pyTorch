@@ -10,19 +10,28 @@ import torch.optim as optim
 # Load and prepare data
 texts = []
 
-with open('./texts/me.txt', 'r', encoding='utf-8') as f:
-    texts = f.read()
-    
-texts = [texts]
+with open('./texts/facts.txt', 'r', encoding='utf-8') as f:
+    texts = [line.strip() for line in f if line.strip()]
 
-print(texts)
+print(f"Loaded {len(texts)} non-empty lines.")
+
 dataset = GPT2Dataset(tokenizer, texts, block_size=32)
+print(f"Number of training samples: {len(dataset)}")
+
 loader = DataLoader(dataset, batch_size=1, shuffle=True)
 
 # Initialize model and optimizer
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 config = GPT2Config()
 model = miniGPT2(config).to(device)
+
+# Load existing checkpoint if available
+checkpoint_path = "./minigpt2.pth"
+try:
+    model.load_state_dict(torch.load(checkpoint_path, map_location=device))
+    print("Checkpoint loaded. Continuing training...")
+except FileNotFoundError:
+    print("No checkpoint found. Starting from scratch.")
 optimizer = optim.Adam(model.parameters(), lr=3e-4)
 
 #Training loop
